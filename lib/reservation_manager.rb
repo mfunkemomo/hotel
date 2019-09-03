@@ -1,6 +1,6 @@
-#create reservation_maker class
+require_relative 'date_range'
 
-class Reservation_Maker
+class Reservation_Manager
   #takes in all attributes of Reservation class 
   #initialize 
   def initialize()
@@ -29,6 +29,13 @@ class Reservation_Maker
   #book a room 
   def book_room
     #make a reservation instance
+    #find the first room that is available 
+    #if room in room list is available make room_no equal that room
+    available_room = room_list.find{|room| room.status == :available}
+    room_no = available_room.room_no
+    #does checkin and checkout have to be Date_Range.checkin/out
+    new_reservation = Reservation.new(customer_name, checkin, checkout, room_no)
     #add reservation instance to reservation list - WHERE IS RESERVATION LIST
+    reservation_list.push(new_reservation)
   end 
 end 
