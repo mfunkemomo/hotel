@@ -12,7 +12,7 @@ class Room
     valid_statuses = %i[available unavailable]
     if status == nil
       status = :available
-    else valid_statuses.include?(@status) == false
+    else valid_statuses.include?(status) == false
       raise ArgumentError.new "Unknown status"
     end 
   end 

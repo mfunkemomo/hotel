@@ -3,7 +3,8 @@ require 'date'
 
 class Date_Range
   #initialise date range
-  def initalize(checkin, checkout)
+  #make params keywords! 
+  def initalize(checkin:, checkout:)
     @checkin = Date.parse(checkin) 
     @checkout = Date.parse(checkout)
   end 

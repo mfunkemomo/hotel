@@ -22,6 +22,7 @@ class Reservation_Manager
   end 
 
   #list of current reservations for a certain day
+  #what is the relationship between this method and date_range
   def reservation_list(date)
     
   end

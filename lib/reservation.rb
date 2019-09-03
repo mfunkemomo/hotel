@@ -1,5 +1,5 @@
 #make Reservation class
-require_relative 'lib/date_range'
+require_relative 'date_range'
 
 class Reservation
   def initialize(customer_name, checkin, checkout, room_no)
