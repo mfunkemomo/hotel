@@ -10,9 +10,8 @@ module HotelBookings
     end 
     
     def total_nights
-      #DOUBLE CHECK - can you subtract dates?
       number_of_nights = @checkout - @checkin 
-      return number_of_nights
+      return number_of_nights.to_f
     end 
   end 
 end 

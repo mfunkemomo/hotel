@@ -1,25 +1,21 @@
-#make Reservation class
-require_relative 'date_range'
+# require 'date'
+require_relative 'reservation_dates'
+# require_relative 'reservation_manager'
 
 module HotelBookings
   class Reservation
-    def initialize(customer_name, checkin, checkout, room_no)
+    def initialize(customer_name:, checkin:, checkout:, room_no:)
       @customer_name = customer_name
-      @checkin = Date_Range.checkin
-      @checkout = Date_Range.checkout
+      @checkin = checkin
+      @checkout = checkout
       @room_no = room_no
     end 
   
-    #auto assign a room for reservation
-    #DOUBLE CHECK IF THIS IS ACTUALLY DONE IN RESERVATION_MAKER
-  
-    #calculate total cost of this reservation
     def total_cost
-      subtotal = Date_Range.total_nights * 200 
+      dates = Reservation_Dates.new(checkin:@checkin, checkout:@checkout)
+      subtotal = dates.total_nights * 200 
       total = subtotal * 1.101
-      return total
+      return total.round(2)
     end 
-  
-  
   end 
 end 

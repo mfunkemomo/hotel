@@ -1,4 +1,4 @@
-require_relative 'date_range'
+require_relative 'reservation_dates'
 
 module HotelBookings
   class Reservation_Manager
@@ -15,6 +15,8 @@ module HotelBookings
         rn += 1
       end 
     end 
+
+    #auto assigns a rooom number when making a reservation instance
   
     #methods
     #room status (availability) for a certain day 
