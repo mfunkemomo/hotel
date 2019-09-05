@@ -1,10 +1,10 @@
-# require 'date'
 require_relative 'reservation_dates'
-# require_relative 'reservation_manager'
 
 module HotelBookings
   class Reservation
     def initialize(customer_name:, checkin:, checkout:, room_no:)
+      #currently does not have a resrvation confirmation number
+      # @confirmation_no = rand()
       @customer_name = customer_name
       @checkin = checkin
       @checkout = checkout
