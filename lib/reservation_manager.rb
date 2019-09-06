@@ -1,7 +1,6 @@
 require 'date'
 require_relative 'reservation_dates'
 require_relative 'reservation'
-require 'pry'
 
 module HotelBookings
   class Reservation_Manager
@@ -13,7 +12,9 @@ module HotelBookings
       @checkin = checkin
       @checkout = checkout 
 
-      #CHECK CHECKOUT/CHECKIN VALIDITY 
+      if @checkout < @checkin
+        raise ArgumentError.new('Invalid checkin/checkout date')
+      end 
     end 
 
     def rooms
@@ -38,6 +39,20 @@ module HotelBookings
         end 
         }
       return unavailable_rooms
+    end
+
+    def available_rooms_list(date)
+      available_rooms = []
+      rooms.each { |room, details| 
+        details.each do |dates|
+          if dates != date
+            if available_rooms.include?(room) == false
+              available_rooms.push(room)
+            end 
+          end 
+        end 
+        }
+      return available_rooms
     end
 
     def reservation_nights

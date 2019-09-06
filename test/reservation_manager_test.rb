@@ -9,6 +9,15 @@ describe "Reservation_Manager class" do
     it "creates an instance of reservation_manager" do
       expect(@bookingtest).must_be_kind_of HotelBookings::Reservation_Manager
     end 
+
+    it "raises argument error if checkout/checkin date are invalid" do 
+      @bookingtest2 = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-03', checkout:'2019-09-01')
+      expect(@bookingtest2).must_raise ArgumentError
+      
+      # if @bookingtest2.checkout < @bookingtest2.checkin 
+      #   expect(@bookingtest2).must_raise ArgumentError
+      # end
+    end 
   end 
 
   describe "rooms method" do 
@@ -22,9 +31,32 @@ describe "Reservation_Manager class" do
     it "display list of reservations/rooms for a given date" do 
       expect(@bookingtest.reservation_list('2019-09-05')).must_be_kind_of Array
     end 
+
+    # it "returns "
   
     it "there are no repeated rooms in the reservation list" do
       temp_list = @bookingtest.reservation_list(@checkin)
+      i = 0
+      comparison = temp_list[i]
+      temp_list.each do |room|
+        if comparison == room
+          expect(test_list).must_equal True
+        end  
+        i += 1
+        expect(test_list).must_equal False
+      end 
+    end 
+  end 
+
+  describe "available_rooms_list method" do 
+    it "display list of available rooms for a given date" do 
+      expect(@bookingtest.available_rooms_list('2019-09-05')).must_be_kind_of Array
+    end 
+
+    # it "returns "
+  
+    it "there are no repeated rooms in the list" do
+      temp_list = @bookingtest.available_rooms_list(@checkin)
       i = 0
       comparison = temp_list[i]
       temp_list.each do |room|
@@ -58,7 +90,7 @@ describe "Reservation_Manager class" do
     #   expect(@bookingtest.make_reservation).must_raise ArgumentError 
     # end 
 
-    it "make_reservation method makes reservation instance" do 
+    it "make_reservation method makes a reservation (instance)" do 
       expect(@bookingtest.make_reservation).must_be_kind_of HotelBookings::Reservation
     end 
   end 
