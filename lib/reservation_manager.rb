@@ -81,7 +81,7 @@ module HotelBookings
             rooms[available_room] = day
             booked_rooms.push(available_room)
           else 
-            raise ArgumentError.new("No rooms available for this date: #{day}")
+            raise ArgumentError.new("No rooms available for #{day}")
           end 
         end 
       end 

@@ -10,13 +10,10 @@ describe "Reservation_Manager class" do
       expect(@bookingtest).must_be_kind_of HotelBookings::Reservation_Manager
     end 
 
-    it "raises argument error if checkout/checkin date are invalid" do 
-      @bookingtest2 = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-03', checkout:'2019-09-01')
-      expect(@bookingtest2).must_raise ArgumentError
-      
-      # if @bookingtest2.checkout < @bookingtest2.checkin 
-      #   expect(@bookingtest2).must_raise ArgumentError
-      # end
+    it "raises argument error if checkout/checkin date are invalid" do
+      expect{
+        HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-03', checkout:'2019-09-01')
+      }.must_raise ArgumentError
     end 
   end 
 
