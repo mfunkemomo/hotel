@@ -5,18 +5,21 @@ require 'pry'
 
 module HotelBookings
   class Reservation_Manager
+    MAX_ROOMS = 20
     attr_reader :customer_name, :checkin, :checkout
    
     def initialize(customer_name:, checkin:, checkout:)
       @customer_name = customer_name
       @checkin = checkin
       @checkout = checkout 
+
+      #CHECK CHECKOUT/CHECKIN VALIDITY 
     end 
 
     def rooms
       room_list ={}
       rnum = 1
-      20.times do
+      MAX_ROOMS.times do
         room_list[rnum] = []
         rnum += 1
       end
@@ -37,7 +40,7 @@ module HotelBookings
       return unavailable_rooms
     end
 
-    def book_room
+    def reservation_nights
       @dates = Reservation_Dates.new(checkin:@checkin, checkout:@checkout)
       days = []
       day = @dates.checkin
@@ -45,10 +48,13 @@ module HotelBookings
         days.push(day)
         day = day + 1
       end 
+      return days 
+    end 
 
+    def book_room
       booked_rooms = []
       i = 0
-      days.each do |day|
+      reservation_nights.each do |day|
         unavailable_rooms = reservation_list(day)
         if unavailable_rooms.length == 0 
           available_room = i+1

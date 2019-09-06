@@ -38,12 +38,24 @@ describe "Reservation_Manager class" do
   end 
   
   describe "checking room availability, book rooms, and make reservation" do 
-    it "find an available room for each night of reservation_dates" do 
-      expect(@bookingtest.book_room.length).must_equal 2
+    it "get a list of dates of the date range" do 
+      expect(@bookingtest.reservation_nights.length).must_equal 2
+      expect(@bookingtest.reservation_nights).must_be_kind_of Array
     end 
 
-    # it "should raise an error if no rooms are available for a day" do 
+    it "find an available room for each night of reservation_dates" do 
+      expect(@bookingtest.book_room.length).must_equal 2
+      expect(@bookingtest.book_room).must_be_kind_of Array
+    end 
 
+    #THIS IS FOR WAVE 2!!!! 
+    # it "should raise an Argument Error if no rooms are available" do 
+    #   #make 20 reservations with overlapping date
+    #   20.times do 
+    #     new_res = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-02', checkout:'2019-09-03')
+    #     new_res.make_reservation
+    #   end 
+    #   expect(@bookingtest.make_reservation).must_raise ArgumentError 
     # end 
 
     it "make_reservation method makes reservation instance" do 
