@@ -3,8 +3,7 @@ require_relative 'reservation_dates'
 module HotelBookings
   class Reservation
     def initialize(customer_name:, checkin:, checkout:, room_no:)
-      #currently does not have a resrvation confirmation number
-      # @confirmation_no = rand()
+      #no confirmation number right now
       @customer_name = customer_name
       @checkin = checkin
       @checkout = checkout
@@ -17,5 +16,9 @@ module HotelBookings
       total = subtotal * 1.101
       return total.round(2)
     end 
+
+    # def self.all
+    #   ObjectSpace.each_object(self).to_a
+    # end
   end 
 end 

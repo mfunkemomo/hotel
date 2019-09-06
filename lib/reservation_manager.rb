@@ -1,6 +1,7 @@
 require 'date'
 require_relative 'reservation_dates'
 require_relative 'reservation'
+require 'pry'
 
 module HotelBookings
   class Reservation_Manager
@@ -10,7 +11,6 @@ module HotelBookings
       @customer_name = customer_name
       @checkin = checkin
       @checkout = checkout 
-      # @dates = Reservation_Dates.new(checkin: @checkin, checkout:@checkout)
     end 
 
     def rooms
@@ -24,7 +24,6 @@ module HotelBookings
     end 
   
     def reservation_list(date)
-      #NEED TO GO THROUGH RESERVATION INSTANCES 
       unavailable_rooms = []
       rooms.each { |room, details| 
         details.each do |dates|
@@ -37,26 +36,40 @@ module HotelBookings
         }
       return unavailable_rooms
     end
-    
+
     def book_room
       @dates = Reservation_Dates.new(checkin:@checkin, checkout:@checkout)
       days = []
       day = @dates.checkin
-      @dates.total_nights.times do 
+      @dates.total_nights.to_i.times do 
         days.push(day)
         day = day + 1
       end 
 
+      booked_rooms = []
+      i = 0
       days.each do |day|
-        check = reservation_list(day)
-        i = 0
-        for i..check.length
-          if rooms[i] != check[i]
-            available_room = room[i]
+        unavailable_rooms = reservation_list(day)
+        if unavailable_rooms.length == 0 
+          available_room = i+1
+          rooms[available_room] = day
+          booked_rooms.push(available_room)
+        elsif unavailable_rooms.length.times  
+          if unavailable_rooms.include?(i+1 == false)
+            available_room = i+1
+            rooms[available_room] = day
+            booked_rooms.push(available_room)
+          else 
+            raise ArgumentError.new("No rooms available for this date: #{day}")
           end 
-          new_reservation = Reservation.new(customer_name:@customer_name, checkin: @checkin, checkout: @checkout, room_no: available_room)
         end 
       end 
+      return booked_rooms 
     end 
+    
+    def make_reservation
+      new_reservation = Reservation.new(customer_name:@customer_name, checkin: @checkin, checkout: @checkout, room_no: book_room)
+    end 
+
   end 
 end 
