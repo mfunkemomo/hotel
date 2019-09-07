@@ -7,18 +7,16 @@ module HotelBookings
     MAX_ROOMS = 20
     attr_reader :customer_name, :checkin, :checkout
    
-    def initialize(customer_name:, checkin:, checkout:)
+    def initialize(customer_name:)
       @customer_name = customer_name
-      @checkin = checkin
-      @checkout = checkout 
 
-      if @checkout < @checkin
-        raise ArgumentError.new('Invalid checkin/checkout date')
-      end 
+      #pull all rooms with current reservations 
+      #array of reservation instances 
+      # current_reservations = []
     end 
 
-    def rooms
-      room_list ={}
+    def rooms 
+      room_list = {}
       rnum = 1
       MAX_ROOMS.times do
         room_list[rnum] = []
@@ -55,8 +53,8 @@ module HotelBookings
       return available_rooms
     end
 
-    def reservation_nights
-      @dates = Reservation_Dates.new(checkin:@checkin, checkout:@checkout)
+    def reservation_nights(checkin:, checkout:)
+      @dates = Reservation_Dates.new(checkin: checkin, checkout:checkout)
       days = []
       day = @dates.checkin
       @dates.total_nights.to_i.times do 
@@ -66,30 +64,37 @@ module HotelBookings
       return days 
     end 
 
-    def book_room
+    def book_room(checkin:, checkout:)
       booked_rooms = []
-      i = 0
-      reservation_nights.each do |day|
+      room_num = 1
+      num_nights = reservation_nights(checkin:checkin, checkout:checkout)
+      num_nights.each do |day|
         unavailable_rooms = reservation_list(day)
         if unavailable_rooms.length == 0 
-          available_room = i+1
-          rooms[available_room] = day
-          booked_rooms.push(available_room)
-        elsif unavailable_rooms.length.times  
-          if unavailable_rooms.include?(i+1 == false)
-            available_room = i+1
-            rooms[available_room] = day
-            booked_rooms.push(available_room)
-          else 
+          booked_rooms.push(room_num)
+        else 
+          case Room_Number  
+          when room_num > 0
+            until unavailable_rooms.include?(room_num) == false
+              room_num += 1
+            end 
+            booked_rooms.push(room_num)
+          when room_num > MAX_ROOMS
             raise ArgumentError.new("No rooms available for #{day}")
-          end 
+          end  
         end 
       end 
       return booked_rooms 
     end 
     
-    def make_reservation
-      new_reservation = Reservation.new(customer_name:@customer_name, checkin: @checkin, checkout: @checkout, room_no: book_room)
+    def make_reservation(checkin:, checkout:)
+      if checkout < checkin
+        raise ArgumentError.new('Invalid checkin/checkout date')
+      end 
+
+      new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: book_room)
+
+      #add reservations to reservation list?
     end 
 
   end 

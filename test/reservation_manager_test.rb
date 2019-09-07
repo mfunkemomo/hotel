@@ -2,18 +2,12 @@ require_relative 'test_helper'
 
 describe "Reservation_Manager class" do 
   before do
-    @bookingtest = HotelBookings::Reservation_Manager.new(customer_name: 'Ted', checkin:'2019-09-01', checkout:'2019-09-03')
+    @bookingtest = HotelBookings::Reservation_Manager.new(customer_name: 'Ted')
   end 
 
   describe "instantiation" do 
     it "creates an instance of reservation_manager" do
       expect(@bookingtest).must_be_kind_of HotelBookings::Reservation_Manager
-    end 
-
-    it "raises argument error if checkout/checkin date are invalid" do
-      expect{
-        HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-03', checkout:'2019-09-01')
-      }.must_raise ArgumentError
     end 
   end 
 
@@ -25,11 +19,24 @@ describe "Reservation_Manager class" do
   end 
 
   describe "reservation_list method" do 
+    before do 
+
+    end 
+
     it "display list of reservations/rooms for a given date" do 
       expect(@bookingtest.reservation_list('2019-09-05')).must_be_kind_of Array
     end 
 
-    # it "returns "
+    #COME BACK TO THIS 
+    # it "successfully pushes unavailable rooms to unavailble_rooms variable" do 
+    #   @res_test = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-01', checkout:'2019-09-02')
+    #   @res_test.booked_rooms.each do |room_num|
+    #     rooms[room_num] = @res_test.reservation_nights
+    #   end 
+    #   expect{
+    #     @res_test.reservation_list(@checkin)
+    #   }.must_include @checkin 
+    # end 
   
     it "there are no repeated rooms in the reservation list" do
       temp_list = @bookingtest.reservation_list(@checkin)
@@ -66,29 +73,45 @@ describe "Reservation_Manager class" do
     end 
   end 
   
-  describe "checking room availability, book rooms, and make reservation" do 
+  describe "book_room method = checking room availability and books room" do 
     it "get a list of dates of the date range" do 
-      expect(@bookingtest.reservation_nights.length).must_equal 2
-      expect(@bookingtest.reservation_nights).must_be_kind_of Array
+      new_res = @bookingtest.reservation_nights(checkin:'2019-09-01', checkout:'2019-09-03')
+      expect(new_res.length).must_equal 2
+      expect(new_res).must_be_kind_of Array
     end 
 
-    it "find an available room for each night of reservation_dates" do 
-      expect(@bookingtest.book_room.length).must_equal 2
-      expect(@bookingtest.book_room).must_be_kind_of Array
+    it "find an available room for each night of reservation_dates" do
+      new_res = @bookingtest.book_room(checkin:'2019-09-01', checkout:'2019-09-03') 
+      expect(new_res.length).must_equal 2
+      expect(new_res).must_be_kind_of Array
     end 
 
-    #THIS IS FOR WAVE 2!!!! 
-    # it "should raise an Argument Error if no rooms are available" do 
-    #   #make 20 reservations with overlapping date
-    #   20.times do 
-    #     new_res = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-02', checkout:'2019-09-03')
-    #     new_res.make_reservation
-    #   end 
-    #   expect(@bookingtest.make_reservation).must_raise ArgumentError 
-    # end 
+    it "room should be available and not already booked for day" do 
 
+    end 
+
+    it "should raise an Argument Error if no rooms are available" do 
+      20.times do 
+        @new_res = HotelBookings::Reservation_Manager.new(customer_name: 'Momo', checkin:'2019-09-02', checkout:'2019-09-03')
+        @new_res.make_reservation(checkin:'2019-09-01', checkout:'2019-09-03')
+      end 
+      expect{@bookingtest.make_reservation}.must_raise ArgumentError 
+    end 
+
+  end
+  
+  describe "make_reservation method, makes the reservation" do 
     it "make_reservation method makes a reservation (instance)" do 
-      expect(@bookingtest.make_reservation).must_be_kind_of HotelBookings::Reservation
+      expect{
+        @bookingtest.make_reservation(checkin:'2019-09-01', checkout:'2019-09-03')
+      }.must_be_kind_of HotelBookings::Reservation
+    end 
+
+    it "raises argument error if checkout/checkin date are invalid" do
+      expect{
+        @new_res = HotelBookings::Reservation_Manager.new(customer_name: 'Momo')
+        @new_res.make_reservation(checkin:'2019-09-03', checkout:'2019-09-01')
+      }.must_raise ArgumentError
     end 
   end 
 end 
