@@ -3,7 +3,6 @@ require_relative 'reservation_dates'
 module HotelBookings
   class Reservation
     def initialize(customer_name:, checkin:, checkout:, room_no:)
-      #no confirmation number right now
       @customer_name = customer_name
       @checkin = checkin
       @checkout = checkout

@@ -10,24 +10,16 @@ module HotelBookings
     def initialize(customer_name:)
       @customer_name = customer_name
 
-      #pull all rooms with current reservations 
-      #array of reservation instances 
-      # current_reservations = []
+      @current_reservations = {1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [], 8 => [], 9 => [], 10 => [], 11 => [], 12 => [], 13 => [], 14 => [], 15 => [], 16 => [], 17 => [], 18 => [], 19 => [], 20 => []}
     end 
 
     def rooms 
-      room_list = {}
-      rnum = 1
-      MAX_ROOMS.times do
-        room_list[rnum] = []
-        rnum += 1
-      end
-      return room_list
+      return @current_reservations
     end 
   
     def reservation_list(date)
       unavailable_rooms = []
-      rooms.each { |room, details| 
+      @current_reservations.each { |room, details| 
         details.each do |dates|
           if dates != date
             if unavailable_rooms.include?(room) == false
@@ -41,7 +33,7 @@ module HotelBookings
 
     def available_rooms_list(date)
       available_rooms = []
-      rooms.each { |room, details| 
+      @current_reservations.each { |room, details| 
         details.each do |dates|
           if dates != date
             if available_rooms.include?(room) == false
@@ -91,11 +83,17 @@ module HotelBookings
       if checkout < checkin
         raise ArgumentError.new('Invalid checkin/checkout date')
       end 
+      reserved_rooms = book_room(checkin:checkin, checkout:checkout)
+      reserved_nights = reservation_nights(checkin:checkin, checkout:checkout)
+      new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: reserved_rooms)
 
-      new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: book_room)
+      i= 0
+      reserved_rooms.each do |room|
+        @current_reservations[room] = reserved_nights[i]
+        i += 1
+      end 
 
-      #add reservations to reservation list?
+      return new_reservation
     end 
-
   end 
 end 
