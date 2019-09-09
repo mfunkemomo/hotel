@@ -29,7 +29,6 @@ describe "Reservation_Manager class" do
         verdict = true 
         return verdict
       end 
-
       expect(verdict).must_equal true 
     end 
   end 
@@ -45,7 +44,6 @@ describe "Reservation_Manager class" do
         verdict = true 
         return verdict
       end 
-
       expect(verdict).must_equal true 
     end 
 
@@ -59,14 +57,14 @@ describe "Reservation_Manager class" do
       new_res = @bookingtest.reservation_nights(checkin:'2019-09-01', checkout:'2019-09-03')
       expect(new_res.length).must_equal 2
       expect(new_res).must_be_kind_of Array
-      expect(new_res[0]).must_be_kind_of Date
+      expect(new_res[1]).must_be_kind_of Date
     end 
 
     it "find an available room for each night of reservation_dates" do
       new_res = @bookingtest.book_room(checkin:'2019-09-01', checkout:'2019-09-03') 
       expect(new_res.length).must_equal 1
       expect(new_res).must_be_kind_of Hash
-      expect(new_res[1]).must_be_kind_of Date
+      expect(new_res[1]).must_be_kind_of Array
     end 
 
     it "should raise an Argument Error if no rooms are available" do 

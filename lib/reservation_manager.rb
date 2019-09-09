@@ -20,10 +20,11 @@ module HotelBookings
     def reservation_list(date)
       unavailable_rooms = []
       key = 1
-      rooms[0]..rooms[19].each do |rm| 
-          if rm[key].include?(date) == true 
-              unavailable_rooms.push(key)
-          end 
+      MAX_ROOMS.times do
+        if @current_reservations[key].include?(date) == true 
+          unavailable_rooms.push(key)
+        end 
+        key += 1
       end
       unavailable_rooms = unavailable_rooms.uniq
       return unavailable_rooms
@@ -32,10 +33,11 @@ module HotelBookings
     def available_rooms_list(date)
       available_rooms = []
       key = 1
-      rooms[0]..rooms[19].each do |rm| 
-          if rm[key].include?(date) == false 
-              available_rooms.push(key)
-          end 
+      MAX_ROOMS.times do 
+        if @current_reservations[key].include?(date) == false 
+          available_rooms.push(key)
+        end 
+        key += 1
       end
       available_rooms = available_rooms.uniq
       return available_rooms
@@ -58,15 +60,20 @@ module HotelBookings
       nights = reservation_nights(checkin:checkin, checkout:checkout)
       nights.each do |night|
         unavailable_rooms = reservation_list(night)
+        dates_array = []
         if unavailable_rooms.length == 0 
-          booked_rooms[room_num] = night
+          dates_array.push(night)
+          booked_rooms[room_num] = dates_array
+          unavailable_rooms.push(room_num)
         else 
           case Room_Number  
           when room_num > 0
             until unavailable_rooms.include?(room_num) == false
               room_num += 1
             end 
-            booked_rooms[room_num] = night
+            dates_array.push(night)
+            booked_rooms[room_num] = dates_array
+            unavailable_rooms.push(room_num)
           when room_num > MAX_ROOMS
             raise ArgumentError.new("No rooms available for #{night}")
           end  
@@ -87,7 +94,7 @@ module HotelBookings
         key += 1
       end 
 
-      # preferred way to add reservations to current_reservations
+      # tested thsi way but kept running into this error 
       # undefined method `each' for #<Date: 2019-09-02 ((2458729j,0s,0n),+0s,2299161j)>
       # key = 1
       # reserved_rooms.length.times do
