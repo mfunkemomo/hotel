@@ -25,15 +25,12 @@ describe "Reservation_Manager class" do
   
     it "there are no repeated rooms in the reservation list" do
       temp_list = @bookingtest.reservation_list('2019-09-01')
-      i = 0
-      comparison = temp_list[i]
-      temp_list.each do |room|
-        if comparison == room
-          expect(test_list).must_equal True
-        end  
-        i += 1
-        expect(test_list).must_equal False
+      if temp_list == temp_list.uniq
+        verdict = true 
+        return verdict
       end 
+
+      expect(verdict).must_equal true 
     end 
   end 
 
@@ -42,20 +39,17 @@ describe "Reservation_Manager class" do
       expect(@bookingtest.available_rooms_list('2019-09-01')).must_be_kind_of Array
     end 
   
-    it "there are no repeated rooms in the list" do
-      temp_list = @bookingtest.available_rooms_list(@checkin)
-      i = 0
-      comparison = temp_list[i]
-      temp_list.each do |room|
-        if comparison == room
-          expect(test_list).must_equal True
-        end  
-        i += 1
-        expect(test_list).must_equal False
+    it "there are no repeated rooms in available list" do
+      temp_list = @bookingtest.available_rooms_list('2019-09-01')
+      if temp_list == temp_list.uniq
+        verdict = true 
+        return verdict
       end 
+
+      expect(verdict).must_equal true 
     end 
 
-    # it "contents of reservation_list and available_rooms_list should not overlap" do 
+    # it "contents of reservation_list and available_rooms_list should not overlap for same day" do 
 
     # end 
   end 
@@ -106,7 +100,7 @@ describe "Reservation_Manager class" do
     it "new reservation is saved in current_reservations" do 
       expect{
         @current_reservations.has_value?([Date.parse('2019-09-01'), Date.parse('2019-09-02')])
-      }.must_equal TRUE
+      }.must_equal true
     end 
   end 
 end 
