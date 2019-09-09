@@ -19,60 +19,63 @@ module HotelBookings
   
     def reservation_list(date)
       unavailable_rooms = []
-      @current_reservations.each { |room, details| 
-        details.each do |dates|
-          if dates != date
+      rooms[0]..rooms[19].each do |room, dates| 
+        dates.each do |res_date|
+          if res_date != date
             if unavailable_rooms.include?(room) == false
               unavailable_rooms.push(room)
             end 
           end 
         end 
-        }
+      end
       return unavailable_rooms
     end
 
     def available_rooms_list(date)
       available_rooms = []
-      @current_reservations.each { |room, details| 
-        details.each do |dates|
-          if dates != date
+      rooms[0]..rooms[19].each do |room, dates| 
+        dates.each do |res_date|
+          if res_dates != date
             if available_rooms.include?(room) == false
               available_rooms.push(room)
             end 
           end 
         end 
-        }
+      end
       return available_rooms
     end
 
     def reservation_nights(checkin:, checkout:)
       @dates = Reservation_Dates.new(checkin: checkin, checkout:checkout)
-      days = []
-      day = @dates.checkin
+      nights = []
+      night = @dates.checkin
       @dates.total_nights.to_i.times do 
-        days.push(day)
-        day = day + 1
+        nights.push(night)
+        night += 1
       end 
-      return days 
+      return nights 
     end 
 
     def book_room(checkin:, checkout:)
-      booked_rooms = []
+      # booked_rooms = []
+      booked_rooms = {}
       room_num = 1
-      num_nights = reservation_nights(checkin:checkin, checkout:checkout)
-      num_nights.each do |day|
-        unavailable_rooms = reservation_list(day)
+      nights = reservation_nights(checkin:checkin, checkout:checkout)
+      nights.each do |night|
+        unavailable_rooms = reservation_list(night)
         if unavailable_rooms.length == 0 
-          booked_rooms.push(room_num)
+          # booked_rooms.push(room_num)
+          booked_rooms[room_num] = night
         else 
           case Room_Number  
           when room_num > 0
             until unavailable_rooms.include?(room_num) == false
               room_num += 1
             end 
-            booked_rooms.push(room_num)
+            # booked_rooms.push(room_num)
+            booked_rooms[room_num] = night
           when room_num > MAX_ROOMS
-            raise ArgumentError.new("No rooms available for #{day}")
+            raise ArgumentError.new("No rooms available for #{night}")
           end  
         end 
       end 
@@ -84,15 +87,25 @@ module HotelBookings
         raise ArgumentError.new('Invalid checkin/checkout date')
       end 
       reserved_rooms = book_room(checkin:checkin, checkout:checkout)
-      reserved_nights = reservation_nights(checkin:checkin, checkout:checkout)
-      new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: reserved_rooms)
+      # reserved_nights = reservation_nights(checkin:checkin, checkout:checkout)
+      # i= 0
+      # reserved_nights.each do |night|
+      #   @current_reservations[reserved_rooms[i]] = reserved_nights
+      #   i += 1
+      # end 
 
-      i= 0
-      reserved_rooms.each do |room|
-        @current_reservations[room] = reserved_nights[i]
-        i += 1
+      # preferred way to add reservations to current_reservations
+      # undefined method `each' for #<Date: 2019-09-02 ((2458729j,0s,0n),+0s,2299161j)>
+      key = 1
+      reserved_rooms.length.times do
+        dates_array = reserved_rooms[key]
+        dates_array.each do |date|
+          @current_reservations[key].push(date)
+        end 
+        key += 1
       end 
 
+      new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: reserved_rooms)
       return new_reservation
     end 
   end 
