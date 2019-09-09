@@ -59,22 +59,19 @@ module HotelBookings
       room_num = 1
       nights = reservation_nights(checkin:checkin, checkout:checkout)
       nights.each do |night|
-        unavailable_rooms = reservation_list(night)
+        available_rooms = available_rooms_list(night)
         dates_array = []
-        if unavailable_rooms.length == 0 
+        if available_rooms.length == 0 
           dates_array.push(night)
           booked_rooms[room_num] = dates_array
-          unavailable_rooms.push(room_num)
         else 
-          case Room_Number  
-          when room_num > 0
-            until unavailable_rooms.include?(room_num) == false
+          if room_num > 0 && room_num <= MAX_ROOMS
+            until available_rooms.include?(room_num) == true
               room_num += 1
             end 
             dates_array.push(night)
             booked_rooms[room_num] = dates_array
-            unavailable_rooms.push(room_num)
-          when room_num > MAX_ROOMS
+          else 
             raise ArgumentError.new("No rooms available for #{night}")
           end  
         end 
