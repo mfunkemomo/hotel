@@ -1,0 +1,5 @@
+- change the way current_reservations saves
+- maybe load all Reservation instances 
+- change tests to pass saving newly made reservations 
+- add Booking class for wave 3 
+- check methods that check for unavailable/available rooms
