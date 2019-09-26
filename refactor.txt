@@ -3,3 +3,32 @@
 - change tests to pass saving newly made reservations 
 - add Booking class for wave 3 
 - check methods that check for unavailable/available rooms
+
+==========================================
+
+Revisiting Hotel
+
+1. What is this class's responsibility? You should be able to describe it in a single sentence.
+  - ReservationDates: is responsible for changing the string dates to a date class and calculate the total nights in a reservation. 
+  - ReservationManager: is responsible for many things: keeping a record of all current reservations, creating a reservation list of all current reservations, creating a list of all current available rooms, finding the nights a reservation was made for, booking or keep rooms on hold, and making a reservation. 
+  - Reservation: is responsibility for creating reservation instances and calculating the total cost of that reservation instance.
+
+2. Is this class responsible for exactly one thing?
+  - ReservationDates: Yes, it's responsible for the dates/nights for a reservation. 
+  - ReservationManager: No, it's responsible for many different aspects of making a reservation. 
+  - Reservation: Yes, it's responsible for the reservation itself and its cost. 
+
+3. Does this class take on any responsibility that should be delegated to "lower level" classes?
+  - ReservationManager definitely does. For things like the total nights and the available rooms and current reservations should have been delegated to lower level classes. 
+
+4. Is there code in other classes that directly manipulates this class's instance variables?
+  - ReservationManager dabbles in all the classes directly as of right now. The other two classes do not do touch other class properties. 
+
+5. How easy is it to follow your own instructions?
+  - While the instructions themselves may be simple but I know the work to get it going will take awhile. 
+
+6. Do these refactors improve the clarity of your code?
+  - While I think they are helpful they do not address much about single responsibility and therefore may not help when clarifying code. 
+
+7. Do you still agree with your previous assessment, or could your refactor be further improved?
+  - Definitely room for lots of improvement. 
