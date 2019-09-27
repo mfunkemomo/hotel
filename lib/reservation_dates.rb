@@ -10,13 +10,13 @@ module HotelBookings
     end 
 
     def date_range
-      date_range = @checkin..@checkout
+      date_range = @checkin...@checkout
       dates_array = date_range.to_a
       return dates_array
     end 
 
     def total_nights
-      return date_range.length - 1 
+      return date_range.length  
     end 
   end 
 end 

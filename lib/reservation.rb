@@ -25,15 +25,28 @@ module HotelBookings
     end 
 
     #change @current_reservation to Reservation.all
-    def reservation_list(date)
+    #make a new test for raising argumenterror for invalid list_type
+    def reservation_list(date, list_type)
+      valid_list_type = %i[available_rooms unavailable_rooms]
+      if valid_list_type.include?(list_type) == false
+        raise ArgumentError.new "Invalid list type."
+      end 
+
       unavailable_rooms = []
+      available_rooms = []
       @current_reservations.each do |room|
         if @current_reservations[room].include?(date) == true 
           unavailable_rooms.push(room)
+        else 
+          available_rooms.push(room)
         end 
       end
-      unavailable_rooms = unavailable_rooms.uniq
-      return unavailable_rooms
-    end
+
+      case list_type
+      when :unavailable_rooms
+        return unavailable_rooms.uniq
+      when :available_rooms
+        return available_rooms.uniq
+      end 
   end 
 end 
