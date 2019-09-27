@@ -39,3 +39,7 @@
 
 9. Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
   - EntryCart and ShoppingCart are loosely coupled as ShoppingCart relies on what EntryCart puts into ShoppingCart. 
+
+  FOR MY HOTEL PROJECT
+  - will need to delegate methods to other low level classes 
+  - break up long methods into smaller methods 

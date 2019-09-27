@@ -9,55 +9,23 @@ module HotelBookings
    
     def initialize(customer_name:)
       @customer_name = customer_name
-
-      @current_reservations = {1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [], 8 => [], 9 => [], 10 => [], 11 => [], 12 => [], 13 => [], 14 => [], 15 => [], 16 => [], 17 => [], 18 => [], 19 => [], 20 => []}
     end 
 
-    def rooms 
-      return @current_reservations
-    end 
-
-    def reservation_list(date)
-      unavailable_rooms = []
-      key = 1
-      MAX_ROOMS.times do
-        if @current_reservations[key].include?(date) == true 
-          unavailable_rooms.push(key)
-        end 
-        key += 1
-      end
-      unavailable_rooms = unavailable_rooms.uniq
-      return unavailable_rooms
-    end
-  
     def available_rooms_list(date)
       available_rooms = []
-      key = 1
-      MAX_ROOMS.times do 
-        if @current_reservations[key].include?(date) == false 
-          available_rooms.push(key)
+      @current_reservations.each do |room|
+        if @current_reservations[room].include?(date) == false 
+          available_rooms.push(room)
         end 
-        key += 1
       end
       available_rooms = available_rooms.uniq
       return available_rooms
     end
 
-    def reservation_nights(checkin:, checkout:)
-      @dates = Reservation_Dates.new(checkin: checkin, checkout:checkout)
-      nights = []
-      night = @dates.checkin
-      @dates.total_nights.to_i.times do 
-        nights.push(night)
-        night += 1
-      end 
-      return nights 
-    end 
-
-    def book_room(checkin:, checkout:)
+    def book_room
       booked_rooms = {}
       room_num = 1
-      nights = reservation_nights(checkin:checkin, checkout:checkout)
+      nights = @ReservationDates.reservation_nights
       nights.each do |night|
         available_rooms = available_rooms_list(night)
         dates_array = []
