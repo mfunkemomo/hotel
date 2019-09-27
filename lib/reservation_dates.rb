@@ -8,19 +8,15 @@ module HotelBookings
       @checkin = Date.parse(checkin) 
       @checkout = Date.parse(checkout)
     end 
-    
-    def total_nights
-      number_of_nights = @checkout - @checkin 
-      return number_of_nights.to_f
+
+    def date_range
+      date_range = @checkin..@checkout
+      dates_array = date_range.to_a
+      return dates_array
     end 
 
-    def reservation_nights
-      nights = []
-      total_nights.each do |night| 
-        nights.push(night)
-        night += 1
-      end 
-      return nights 
+    def total_nights
+      return date_range.length - 1 
     end 
   end 
 end 

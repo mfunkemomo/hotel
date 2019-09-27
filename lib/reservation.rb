@@ -8,9 +8,11 @@ module HotelBookings
       @checkout = checkout
       @room_no = room_no
 
+      #would like to remove this 
       @current_reservations = {1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [], 8 => [], 9 => [], 10 => [], 11 => [], 12 => [], 13 => [], 14 => [], 15 => [], 16 => [], 17 => [], 18 => [], 19 => [], 20 => []}
     end 
 
+    #would like to change this to self.all and load all reservations made during program run. Shuld return a hash 
     def rooms
       return current_reservations
     end 
@@ -22,6 +24,7 @@ module HotelBookings
       return total.round(2)
     end 
 
+    #change @current_reservation to Reservation.all
     def reservation_list(date)
       unavailable_rooms = []
       @current_reservations.each do |room|

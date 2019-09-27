@@ -13,8 +13,8 @@ module HotelBookings
 
     def available_rooms_list(date)
       available_rooms = []
-      @current_reservations.each do |room|
-        if @current_reservations[room].include?(date) == false 
+      Reservation.rooms.each do |room|
+        if room.include?(date) == false 
           available_rooms.push(room)
         end 
       end
@@ -22,7 +22,7 @@ module HotelBookings
       return available_rooms
     end
 
-    def book_room
+    def book_room(checkin:checkin, checkout:checkout)
       booked_rooms = {}
       room_num = 1
       nights = @ReservationDates.reservation_nights
@@ -58,19 +58,6 @@ module HotelBookings
         @current_reservations[key].push(reserved_rooms[key])
         key += 1
       end 
-
-      # tested thsi way but kept running into this error 
-      # undefined method `each' for #<Date: 2019-09-02 ((2458729j,0s,0n),+0s,2299161j)>
-      # key = 1
-      # reserved_rooms.length.times do
-      #   dates_array = reserved_rooms[key]
-      #   dates_array.each do |date|
-      #       if @current_reservations[key].include?(date) == false
-      #       @current_reservations[key].push(date)
-      #       end 
-      #   end 
-      #   key += 1
-      # end 
 
       new_reservation = Reservation.new(customer_name:@customer_name, checkin: checkin, checkout: checkout, room_no: reserved_rooms)
       return new_reservation
