@@ -8,11 +8,11 @@ module HotelBookings
       @checkout = checkout
       @room_no = room_no
 
-      #would like to remove this 
+      #need to remoe this or move it 
       @current_reservations = {1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => [], 7 => [], 8 => [], 9 => [], 10 => [], 11 => [], 12 => [], 13 => [], 14 => [], 15 => [], 16 => [], 17 => [], 18 => [], 19 => [], 20 => []}
     end 
 
-    #would like to change this to self.all and load all reservations made during program run. Shuld return a hash 
+    #would like to change this to self.all and load all reservations made in running memory. Shuld return a hash 
     def rooms
       return current_reservations
     end 
