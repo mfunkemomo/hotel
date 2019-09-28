@@ -24,7 +24,7 @@ module HotelBookings
       return total.round(2)
     end 
 
-    #change @current_reservation to Reservation.all
+    #change rooms (method) to Reservation.all
     #make a new test for raising argumenterror for invalid list_type
     #not sure if i should have this here, can only use this method if a reservation gets instantiated. what if user  hasnt instantiated but wants to know room availibility? 
     #but it also makes sense to have it here as it will pull all reservations made 
@@ -36,8 +36,8 @@ module HotelBookings
 
       unavailable_rooms = []
       available_rooms = []
-      @current_reservations.each do |room|
-        if @current_reservations[room].include?(date) == true 
+      rooms.each do |room|
+        if rooms[room].include?(date) == true 
           unavailable_rooms.push(room)
         else 
           available_rooms.push(room)
@@ -50,5 +50,6 @@ module HotelBookings
       when :available_rooms
         return available_rooms.uniq
       end 
+    end 
   end 
 end 
