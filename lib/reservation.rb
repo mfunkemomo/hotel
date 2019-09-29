@@ -14,7 +14,7 @@ module HotelBookings
 
     #would like to change this to self.all and load all reservations made in running memory. Should return a hash 
     def rooms
-      return current_reservations
+      return @current_reservations
     end 
   
     def total_cost
@@ -36,8 +36,8 @@ module HotelBookings
 
       unavailable_rooms = []
       available_rooms = []
-      rooms.each do |room|
-        if rooms[room].include?(date) == true 
+      @current_reservations.each do |room|
+        if room.include?(date) == true 
           unavailable_rooms.push(room)
         else 
           available_rooms.push(room)
